@@ -1,0 +1,79 @@
+# Public-release allowlist
+# Ignore everything by default, then opt public files back in.
+*
+!/.gitignore
+!/README.md
+!/DATA_ACCESS.md
+!/REPRODUCE.md
+!/CITATION.cff
+!/pytest.ini
+
+# Public code and config
+!/src/
+!/src/**
+!/conf/
+!/conf/*.yaml
+!/tests/
+!/tests/*.py
+!/tests/helpers.py
+!/templates/
+!/templates/project_config.example.yaml
+!/templates/roi_families.yaml
+
+# Lightweight public manifests
+!/data/
+!/data/manifests/
+!/data/manifests/*.parquet
+
+# Public paper-facing outputs
+!/outputs/
+!/outputs/tables/
+!/outputs/tables/*.csv
+!/outputs/figures/
+!/outputs/figures/*.png
+!/outputs/figures/*.pdf
+# Public manuscript source can be added later when finalized
+
+# Internal docs, prompts, contracts, blueprints, and mirrors stay private
+docs/
+spec/
+contracts/
+references/
+manuscript/
+scripts/
+vendor/
+PROJECT_MAP.md
+START_PROMPT_FOR_CODEX.md
+RESEARCH_LEAD_REVIEW.md
+AGENTS.md
+**/AGENTS.md
+
+# Outputs that are internal, provenance-heavy, or too raw for the public repo
+outputs/provenance/
+outputs/subject_results/
+outputs/group_results/
+outputs/stats/
+outputs/bridge/
+outputs/caches/
+outputs/qc/
+outputs/staging/
+outputs/logs/
+outputs/.pytest_cache/
+outputs/.pytest_tmp/
+outputs/.test_scratch/
+outputs/.mutation_worker_tmp/
+# Non-public data beyond frozen lightweight manifests
+data/*
+!data/manifests/
+!data/manifests/*.parquet
+
+# Scratch, caches, and generated Python artifacts
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+.pytest_cache/
+.tmp_test_*/
+pytest-cache-files-*/
+tmp*/
+src/README.md

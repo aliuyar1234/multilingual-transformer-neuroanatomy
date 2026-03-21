@@ -1,0 +1,3 @@
+model,hidden_size,n_blocks,states_extracted,output_equivalence,cache_size_summary
+nllb,1024,12,"ATTN,FFN,OUTPUT,POST_ATTN",PASS,372.11 MB
+xlmr,768,12,"ATTN,FFN,OUTPUT,POST_ATTN",PASS,279.09 MB

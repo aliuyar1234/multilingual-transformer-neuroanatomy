@@ -1,0 +1,9 @@
+stats:
+  permutations: 10000
+  bootstraps: 10000
+  primary_correction: "holm"
+  secondary_correction: "bh_fdr"
+
+reporting:
+  language_separated_primary_inference: true
+  descriptive_pooled_plots_only: true

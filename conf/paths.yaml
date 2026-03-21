@@ -1,0 +1,10 @@
+paths:
+  prior_repo_root: "vendor/prior_repo_light"
+  prior_data_root: "vendor/prior_repo_light/data"
+  prior_models_root: "vendor/prior_repo_light/models"
+  prior_outputs_root: "vendor/prior_repo_light/outputs"
+  prior_python: ".venv/Scripts/python.exe"
+  prior_mirror_root: "vendor/prior_repo_light"
+  local_data_root: "data"
+  local_manifests_root: "data/manifests"
+  local_outputs_root: "outputs"

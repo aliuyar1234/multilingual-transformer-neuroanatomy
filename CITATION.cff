@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+title: "Inside the Multilingual Transformer: Computational Neuroanatomy of Shared and Language-Specific Brain Alignment"
+message: "If you use this repository, please cite the accompanying paper."
+type: software
+authors:
+  - family-names: Uyar
+    given-names: Ali
+repository-code: "https://github.com/aliuyar1234/multilingual-transformer-neuroanatomy"
+abstract: "Code and paper-facing artifacts for mechanistic analyses of shared and language-specific multilingual brain alignment during naturalistic story listening."
+keywords:
+  - multilingual transformers
+  - naturalistic fMRI
+  - brain-language alignment
+  - computational neuroanatomy
+  - token attribution

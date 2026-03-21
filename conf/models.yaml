@@ -1,0 +1,11 @@
+models:
+  xlmr:
+    hf_id: "xlm-roberta-base"
+    family: "encoder"
+    hidden_size: 768
+    state_names: ["INPUT", "ATTN", "POST_ATTN", "FFN", "OUTPUT"]
+  nllb:
+    hf_id: "facebook/nllb-200-distilled-600M"
+    family: "encoder_only"
+    hidden_size: 1024
+    state_names: ["INPUT", "ATTN", "POST_ATTN", "FFN", "OUTPUT"]

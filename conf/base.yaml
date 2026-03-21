@@ -1,0 +1,71 @@
+project:
+  name: "inside_the_multilingual_transformer"
+  seed: 1337
+  output_root: "outputs"
+
+includes:
+  - "paths.yaml"
+  - "models.yaml"
+  - "stats.yaml"
+
+dataset:
+  accession: "ds003643"
+  family: "LPPC"
+  languages: ["EN", "FR", "ZH"]
+  canonical_runs: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  tr_seconds: 2.0
+
+features:
+  fine_hz: 10.0
+  pooling: "mean"
+  normalize: "l2"
+  eps: 1.0e-8
+  cache_dtype: "float16"
+  state_names: ["ATTN", "POST_ATTN", "FFN", "OUTPUT"]
+  reference_state_names: ["INPUT"]
+  main_conditions: ["SHARED", "SPECIFIC"]
+  control_conditions: ["RAW", "MISMATCHED_SHARED", "ACOUSTIC_ONLY"]
+
+encoding:
+  outer_cv: "leave_one_run_out"
+  inner_cv: "leave_one_run_out"
+  max_pcs: 128
+  variance_threshold: 0.95
+  primary_score: "mean_outer_fold_fisher_z"
+
+parallel:
+  extraction:
+    enabled: true
+    max_parallel: 1
+    max_tokens_per_batch: 2048
+    cache_dtype: "float16"
+  sweep:
+    enabled: true
+    max_parallel: 3
+
+bridge:
+  prior_refresh:
+    dense_refresh_mismatch_shuffles_default: 20
+    missing_layer_mismatch_shuffles_default: 1
+    representative_mismatch_shuffles_default: 5
+    representative_roi_families: ["SEMANTIC", "AUDITORY"]
+
+attribution:
+  representative_selection: "max_mean_shared_minus_specific"
+  deletion_ks: [1, 2]
+  matched_random_draws: 100
+  mutation_encoder_mode: "persistent_worker"
+  token_scope:
+    mode: "winner_only"
+    include_semantic: true
+    include_auditory_if_primary_supported: true
+    auditory_hypothesis: "H2_auditory_attention_preference"
+    support_p_threshold: 0.05
+    require_positive_effect: true
+  token_subset:
+    name: "strict_1_1_1_v1"
+    triplets_per_run: 15
+    target_languages: ["EN", "FR", "ZH"]
+  adaptive_k3:
+    enabled: true
+    min_delta_diff_gain: 0.0
