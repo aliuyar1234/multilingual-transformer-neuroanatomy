@@ -37,12 +37,14 @@ The current evidence therefore supports a stronger attention-side mechanistic ac
 - `data/manifests/`: frozen structural manifests for the sample, runs, ROIs, sentence spans, and multilingual triplets
 - `outputs/tables/`: paper-facing CSV tables
 - `outputs/figures/`: paper-facing PNG and PDF figures
+- `paper/`: public paper PDF
 - `templates/`: public-safe configuration templates
 
 ## Results and artifacts
 
 Primary paper-facing assets:
 
+- [attention-side-transformer-brain-alignment.pdf](paper/attention-side-transformer-brain-alignment.pdf)
 - [table03_primary_confirmatory_stats.csv](outputs/tables/table03_primary_confirmatory_stats.csv)
 - [table04_representative_roi_summaries.csv](outputs/tables/table04_representative_roi_summaries.csv)
 - [table05_token_class_attribution.csv](outputs/tables/table05_token_class_attribution.csv)

@@ -9,6 +9,7 @@ This repository accompanies the paper as a public research artifact. It supports
 - inspect frozen manifests in `data/manifests/`
 - inspect the generated figures in `outputs/figures/`
 - inspect the generated tables in `outputs/tables/`
+- inspect the public paper PDF in `paper/`
 - run the public regression tests in `tests/`
 
 ## Minimal public validation

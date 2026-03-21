@@ -7,6 +7,8 @@
 !/REPRODUCE.md
 !/CITATION.cff
 !/pytest.ini
+!/paper/
+!/paper/*.pdf
 
 # Public code and config
 !/src/
