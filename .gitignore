@@ -79,3 +79,16 @@ data/*
 pytest-cache-files-*/
 tmp*/
 src/README.md
+
+# Internal scaffolding -- not part of the public research release
+.codex/
+.tmp_gpt_pro_bundle/
+.tmp_zip_*/
+_local/
+CODEX_*.md
+*_CODEX.md
+PROMPT_TO_CODEX.md
+GPT_PRO_*.md
+*gpt_pro*
+SELF_REVIEW_NOTES.md
+review_unpack/

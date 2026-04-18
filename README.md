@@ -1,121 +1,96 @@
-# Multilingual Transformer Neuroanatomy
+# Inside the Multilingual Transformer: Computational Neuroanatomy of Shared and Language-Specific Brain Alignment
 
 [![DOI](https://zenodo.org/badge/1187629245.svg)](https://doi.org/10.5281/zenodo.19185601)
-[![Paper PDF](https://img.shields.io/badge/Paper-PDF-B31B1B?style=flat&logo=adobeacrobatreader&logoColor=white)](https://github.com/aliuyar1234/multilingual-transformer-neuroanatomy/raw/main/paper/attention-side-transformer-brain-alignment.pdf)
-[![Reproduce](https://img.shields.io/badge/Reproduce-Guide-0A7F5A?style=flat)](REPRODUCE.md)
-[![Data Access](https://img.shields.io/badge/Data-Access-005F8F?style=flat)](DATA_ACCESS.md)
+[![Paper PDF](https://img.shields.io/badge/Paper-PDF-B31B1B?style=flat-square&logo=adobeacrobatreader&logoColor=white)](paper/attention-side-transformer-brain-alignment.pdf)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/aliuyar1234/multilingual-transformer-neuroanatomy)
+[![Citation](https://img.shields.io/badge/Citation-CFF-0A7F5A?style=flat-square)](CITATION.cff)
+[![Scope](https://img.shields.io/badge/Scope-ROI--First%20Mechanistic%20Study-5B4B8A?style=flat-square)](#scope)
 
-Code, paper-facing artifacts, and public release materials for:
+Ali Uyar
+Independent Researcher
 
-**Inside the Multilingual Transformer: Computational Neuroanatomy of Shared and Language-Specific Brain Alignment**
+**Paper title:** *Inside the Multilingual Transformer: Computational Neuroanatomy of Shared and Language-Specific Brain Alignment*
 
-This repository studies how internal computations in multilingual transformers align with shared and language-specific brain responses during naturalistic story listening. The project is framed as a mechanistic multilingual neuroscience study rather than a model-benchmark comparison: the goal is to identify which internal transformer computations and token-level signals help explain multilingual `SHARED > SPECIFIC` brain alignment, and why that effect extends into auditory cortex.
+This repository accompanies a mechanistic multilingual neuroscience study rather than a model-benchmark comparison. Using the Le Petit Prince multilingual fMRI corpus (LPPC) in English, French, and Chinese, it asks which internal computations inside XLM-R-base and the encoder of NLLB-200-distilled-600M generate the shared-over-specific brain alignment effect observed in prior work, and why that effect extends into auditory and superior temporal cortex rather than sitting cleanly in semantic ROIs.
 
-The released public surface is intentionally compact. It provides the executable analysis code, lightweight public manifests, tests, paper-facing figures and tables, and the final paper PDF without exposing the full internal development workspace.
+## Abstract
 
-## At a Glance
+Most brain-LLM alignment work uses returned hidden states and is effectively monolingual, leaving unclear which internal computations carry cross-lingually shared explanatory signal. A prior multilingual LPPC study showed that a leave-target-out `SHARED` representation outperformed a target-language `SPECIFIC` residual in semantic ROIs, but auditory and superior temporal regions also showed robust shared advantages. This paper asks where inside multilingual transformers that shared advantage is generated. Using English, French, and Chinese listeners from LPPC, we extracted intermediate block states from XLM-R-base and the encoder of NLLB-200-distilled-600M, decomposed each state into shared and language-specific components, and evaluated them with cross-validated ROI encoding models supplemented by token-level attribution and deletion validation. The originally planned semantic FFN-preference headline was not supported in the confirmatory primary table; instead, auditory attention-side preference was positive in most model-language cells and Holm-significant in 4 of 6. Deletion validation was uniformly positive, with top-attributed token removal exceeding matched-random removal in every released row. These results argue for a state-level, attention-side mechanistic account of multilingual brain alignment rather than a clean semantic-FFN story.
 
-- **Scientific scope:** computational neuroanatomy of multilingual transformer internals under naturalistic fMRI
-- **Dataset:** LPPC / Le Petit Prince multilingual naturalistic fMRI
-- **Languages:** English, French, Chinese
-- **Model families:** XLM-R-base and the encoder of NLLB-200-distilled-600M
-- **Main analytical lens:** internal-state, token-attribution, and deletion-validation analysis of `SHARED` versus `SPECIFIC` alignment
+## Main Finding
 
-## Main Paper
+The originally planned headline (`H1_semantic_ffn_preference`) did not survive. All six confirmatory `model x language` H1 rows came out negative, so the paper does not support an FFN-semantic mechanism for the `SHARED > SPECIFIC` effect. The attention-side preference in auditory/STG regions (`H2_auditory_attention_preference`), by contrast, is positive in most cells and Holm-significant in 4 of 6:
 
-- [Download the paper PDF](https://github.com/aliuyar1234/multilingual-transformer-neuroanatomy/raw/main/paper/attention-side-transformer-brain-alignment.pdf)
-- [Machine-readable citation](CITATION.cff)
+| Model | Language | H2 effect | p_holm        |
+| ----- | -------- | --------- | ------------- |
+| xlmr  | EN       | 0.0066    | **0.0012**    |
+| xlmr  | FR       | 0.0038    | **0.0072**    |
+| xlmr  | ZH       | 0.0073    | **0.0022**    |
+| nllb  | EN       | -0.0027   | 1.0           |
+| nllb  | FR       | 0.0002    | 1.0           |
+| nllb  | ZH       | 0.0048    | **0.0050**    |
 
-## Central Question
+Deletion validation is the cleanest confirmatory surface in the release. Across every model-language-ROI-family row tested, removing top-attributed tokens degrades encoding more than removing matched-random tokens. Representative deletion-validation differences include XLM-R English semantic at k=2 (`diff = 0.0494`, CI excludes zero) and NLLB Chinese auditory at k=2 (`diff = 0.0380`).
 
-The core question behind this release is:
+The paper therefore lands on a narrower but mechanistically clearer story: multilingual brain alignment is not explained by an FFN-side semantic preference; it reflects attention-side computations that interact with how tokens carry alignment-relevant signal mass.
 
-**Which internal transformer computations and token-level signals generate multilingual `SHARED > SPECIFIC` brain alignment, and what explains the extension of that effect into auditory cortex?**
+## Contributions
 
-Rather than treating multilingual brain alignment as a single scalar outcome, this repository analyzes internal model states, representative-state structure, token-class attribution, and deletion-based validation to identify which computational families contribute to the observed brain-side effects.
+1. A state-level multilingual factorization that extracts internal transformer block states rather than relying only on returned hidden states, and decomposes each state into leave-target-out `SHARED` and orthogonalized `SPECIFIC` components.
+2. Confirmatory `SHARED > SPECIFIC` primary tests across English, French, and Chinese with two multilingual model families (XLM-R-base and the encoder of NLLB-200-distilled-600M) and Holm correction across the full `model x language x hypothesis` grid.
+3. Token-level attribution of multilingual alignment-relevant signal mass, broken down by token class, tied directly to representative ROIs.
+4. Deletion validation showing that top-attributed token removal degrades encoding more than matched-random removal in every released row, supporting a causal rather than merely correlational reading of the attention-side account.
+5. A fully paper-facing public release surface: frozen manifests, executable analysis code, paper-facing figures and tables, regression tests, and the compiled manuscript PDF.
 
-## Main Contributions
+## Scope
 
-- state-level analysis of multilingual transformer blocks rather than final hidden states alone
-- leave-target-out `SHARED` versus orthogonalized `SPECIFIC` decomposition across English, French, and Chinese
-- representative-state selection tied directly to paper-facing ROI summaries
-- token attribution analyses for multilingual alignment-relevant signal mass
-- deletion validation that tests whether high-attribution tokens matter more than matched random controls
-- public release of lightweight manifests, executable analysis code, tests, and the full figure/table surface behind the paper
+This release is intentionally narrow.
 
-## Key Findings at a Glance
+- One public naturalistic fMRI corpus: LPPC (`ds003643`), English/French/Chinese cohorts only
+- Two multilingual model families: `FacebookAI/xlm-roberta-base` and the encoder of `facebook/nllb-200-distilled-600M`
+- Anatomical ROI-first analysis on a Harvard-Oxford atlas resampled into LPPC derivative space
+- Primary claims live at the ROI-family level; the cortex-wide panel is an ROI-projected visualization, not a voxelwise inferential map
+- Sentence-span analysis rather than long-context comprehension modeling
+- Correlational encoding plus attribution-guided deletion; no intervention in the brain and no training of the transformers themselves
 
-- the originally planned semantic FFN-preference headline is not supported by the confirmatory primary table
-- auditory attention-side preference is positive in most model-language cells and Holm-significant in `4 / 6`
-- deletion validation is complete, and top-attributed deletion exceeds matched-random deletion in every released deletion-summary row
-- the public evidence surface therefore supports a stronger attention-side mechanistic account than the original FFN-centered semantic expectation
+The contribution is mechanistic narrowing, not breadth. The released public surface supports an attention-side account of multilingual brain alignment and does not support the FFN-semantic framing that the project originally planned around.
+
+## Paper
+
+- Compiled PDF: [`paper/attention-side-transformer-brain-alignment.pdf`](paper/attention-side-transformer-brain-alignment.pdf)
+- Machine-readable citation: [`CITATION.cff`](CITATION.cff)
+- Primary confirmatory stats: [`outputs/tables/table03_primary_confirmatory_stats.csv`](outputs/tables/table03_primary_confirmatory_stats.csv)
+- Representative ROI summaries: [`outputs/tables/table04_representative_roi_summaries.csv`](outputs/tables/table04_representative_roi_summaries.csv)
+- Token-class attribution: [`outputs/tables/table05_token_class_attribution.csv`](outputs/tables/table05_token_class_attribution.csv)
+- Deletion validation: [`outputs/tables/table06_deletion_validation.csv`](outputs/tables/table06_deletion_validation.csv)
 
 ## Repository Layout
 
-- `src/`: analysis code for manifests, features, encoding, statistics, attribution, and figure generation
-- `conf/`: sanitized public configuration for the released analysis surface
-- `tests/`: lightweight regression tests for public code paths
-- `data/manifests/`: frozen structural manifests for the sample, runs, ROIs, sentence spans, and multilingual triplets
-- `outputs/tables/`: paper-facing CSV tables
-- `outputs/figures/`: paper-facing PNG and PDF figures
-- `paper/`: public paper PDF
-- `templates/`: public-safe configuration templates
-- `DATA_ACCESS.md`: scope and boundary document for included versus archived assets
-- `REPRODUCE.md`: reproduction and lightweight validation guidance
+- [`src/`](src/) — analysis code for manifests, state extraction, features, encoding, statistics, attribution, and figure generation
+- [`conf/`](conf/) — sanitized public configuration for the released analysis surface
+- [`data/manifests/`](data/manifests/) — frozen structural manifests for the sample, runs, ROIs, sentence spans, and multilingual triplets
+- [`outputs/tables/`](outputs/tables/) — paper-facing CSV tables
+- [`outputs/figures/`](outputs/figures/) — paper-facing PNG and PDF figures
+- [`paper/`](paper/) — compiled paper PDF
+- [`tests/`](tests/) — lightweight regression tests for public code paths
+- [`templates/`](templates/) — public-safe configuration templates
+- [`docs/`](docs/) — public methods, runbook, and scientific-decision notes
 
-## Results and Artifacts
+## Reproducibility
 
-Primary paper-facing assets include:
-
-- [paper/attention-side-transformer-brain-alignment.pdf](paper/attention-side-transformer-brain-alignment.pdf)
-- [outputs/tables/table03_primary_confirmatory_stats.csv](outputs/tables/table03_primary_confirmatory_stats.csv)
-- [outputs/tables/table04_representative_roi_summaries.csv](outputs/tables/table04_representative_roi_summaries.csv)
-- [outputs/tables/table05_token_class_attribution.csv](outputs/tables/table05_token_class_attribution.csv)
-- [outputs/tables/table06_deletion_validation.csv](outputs/tables/table06_deletion_validation.csv)
-- [outputs/figures/fig03_state_depth_heatmaps.png](outputs/figures/fig03_state_depth_heatmaps.png)
-- [outputs/figures/fig04_primary_state_family_tests.png](outputs/figures/fig04_primary_state_family_tests.png)
-- [outputs/figures/fig05_representative_roi_curves.png](outputs/figures/fig05_representative_roi_curves.png)
-- [outputs/figures/fig07_token_class_mass.png](outputs/figures/fig07_token_class_mass.png)
-- [outputs/figures/fig08_deletion_validation.png](outputs/figures/fig08_deletion_validation.png)
-- [outputs/figures/fig09_roi_preference_map.png](outputs/figures/fig09_roi_preference_map.png)
-
-## Reading Order
-
-If you want the fastest route through the release, start with:
-
-1. [paper/attention-side-transformer-brain-alignment.pdf](paper/attention-side-transformer-brain-alignment.pdf)
-2. [outputs/tables/table03_primary_confirmatory_stats.csv](outputs/tables/table03_primary_confirmatory_stats.csv)
-3. [outputs/tables/table06_deletion_validation.csv](outputs/tables/table06_deletion_validation.csv)
-4. [outputs/figures/fig04_primary_state_family_tests.png](outputs/figures/fig04_primary_state_family_tests.png)
-5. [outputs/figures/fig08_deletion_validation.png](outputs/figures/fig08_deletion_validation.png)
-6. [REPRODUCE.md](REPRODUCE.md)
-7. [DATA_ACCESS.md](DATA_ACCESS.md)
-
-## Reproduction Scope
-
-This repository is designed for artifact inspection, public-code review, and lightweight validation of the released analysis surface. It supports:
-
-- inspection of the implementation in `src/`
-- inspection of the public configuration in `conf/`
-- inspection of frozen manifests in `data/manifests/`
-- inspection of released figures and tables in `outputs/`
-- lightweight regression testing via `pytest -q`
-
-It is not a full mirror of the private development workspace or a complete raw-data execution environment.
-
-## Release Boundaries
-
-The public repository intentionally excludes:
-
-- heavy raw or mirrored dataset assets
-- large intermediate feature caches
-- subject-level runtime shards
-- checkpoint logs and provenance bundles
-- development-only manuscript packaging materials
-- internal operational notes, review memos, and handoff commentary
-
-For exact scope boundaries, see [DATA_ACCESS.md](DATA_ACCESS.md). For the intended public validation surface, see [REPRODUCE.md](REPRODUCE.md).
+- [`REPRODUCE.md`](REPRODUCE.md) — reproduction and lightweight validation guidance
+- [`DATA_ACCESS.md`](DATA_ACCESS.md) — scope and boundary document for included versus archived assets
+- [`docs/RUNBOOK.md`](docs/RUNBOOK.md) — operational runbook for the released analysis surface
+- [`docs/SCIENTIFIC_DECISIONS.md`](docs/SCIENTIFIC_DECISIONS.md) — rationale for key design choices
 
 ## Citation
 
-If you use this repository, please cite the accompanying paper and the Zenodo archive linked above. A machine-readable citation record is available in [CITATION.cff](CITATION.cff).
+```bibtex
+@unpublished{uyar2026multilingualtransformer,
+  author = {Uyar, Ali},
+  title  = {Inside the Multilingual Transformer: Computational Neuroanatomy of Shared and Language-Specific Brain Alignment},
+  year   = {2026},
+  doi    = {10.5281/zenodo.19185601},
+  note   = {Independent research}
+}
+```
